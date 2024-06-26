@@ -58,3 +58,39 @@ exports.fetchTasks = async (req, res) => {
         res.status(500).json({ error: 'Something went wrong' });
     }
 };
+
+
+exports.editTask = async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        const { name, deadline, isPending } = req.body;
+
+        if (!taskId) {
+            return res.status(400).json({ error: 'Task ID is required' });
+        }
+
+        if (!req.user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
+
+        // Find the task to edit
+        const taskIndex = req.user.tasks.findIndex(task => task._id.toString() === taskId);
+
+        if (taskIndex === -1) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+
+        // Update the task fields
+        if (name) req.user.tasks[taskIndex].name = name;
+        if (deadline) req.user.tasks[taskIndex].deadline = deadline;
+        if (isPending !== undefined) req.user.tasks[taskIndex].isPending = isPending;
+
+        // Save the updated user document
+        await req.user.save();
+
+        res.status(200).json({ message: 'Task updated successfully', tasks: req.user.tasks });
+    } catch (error) {
+        console.error('Error editing task:', error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+};
