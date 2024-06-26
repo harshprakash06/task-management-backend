@@ -22,9 +22,14 @@ mongoose.connect(process.env.MONGO_URI, {
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// Apply authMiddleware selectively
+// Define routes
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+
+// Root route for testing
+app.get('/', (req, res) => {
+    res.status(200).send('<h1> WELCOME TO TASK-MANAGEMENT BACKED HEHE</h1>');
+});
 
 // Routes that do not require authentication middleware
 app.use('/auth', authRoutes); // Register and login routes
