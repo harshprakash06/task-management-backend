@@ -1,4 +1,4 @@
-// app.js
+// index.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,12 +7,12 @@ const authMiddleware = require('./middleware/authMiddleware'); // Import your au
 
 dotenv.config();
 
-const app = express();
+const index = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+index.use(bodyParser.json());
+index.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -27,17 +27,17 @@ const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 
 // Root route for testing
-app.get('/', (req, res) => {
+index.get('/', (req, res) => {
     res.status(200).send('<h1> WELCOME TO TASK-MANAGEMENT BACKED HEHE</h1>');
 });
 
 // Routes that do not require authentication middleware
-app.use('/auth', authRoutes); // Register and login routes
+index.use('/auth', authRoutes); // Register and login routes
 
 // Routes that require authentication middleware
-app.use('/tasks', authMiddleware, taskRoutes); // Task-related routes
+index.use('/tasks', authMiddleware, taskRoutes); // Task-related routes
 
 // Start server
-app.listen(port, () => {
+index.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
