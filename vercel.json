@@ -1,15 +1,33 @@
 {
-  "version" : 2,
-  "builds" : [
+  "version": 2,
+  "builds": [
     {
-      "src" : "./index.js",
-      "use" : "@vercel/node"
+      "src": "src/app.js",
+      "use": "@vercel/node"
     }
   ],
-  "routes" : [
+  "routes": [
     {
-      "src" : "/(.*)",
-      "dest" : "/"
+      "src": "/(.*)",
+      "dest": "/src/app.js"
     }
-  ]
+  ],
+  "env": {
+    "MONGO_URI": "mongodb+srv://<username>:<password>@taskmanegemwnt.zovbfby.mongodb.net/?retryWrites=true&w=majority&appName=taskmanegemwnt",
+    "JWT_SECRET": "<your_jwt_secret>",
+    "PORT": "3000"
+  },
+  "functions": {
+    "src/app.js": {
+      "memory": 512,
+      "maxDuration": 10
+    }
+  },
+  "public": true,
+  "build": {
+    "env": {
+      "MONGO_URI": "mongodb+srv://harshprakash06:5P20eoXKeYCxj0fn@taskmanegemwnt.zovbfby.mongodb.net/?retryWrites=true&w=majority&appName=taskmanegemwnt",
+      "JWT_SECRET": "hw15WihHSMzuwlOXG2U5r9+CA9XTBy6ToUu+MSdFmrA="
+    }
+  }
 }
